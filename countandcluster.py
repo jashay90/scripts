@@ -9,6 +9,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-b', dest='bam', type=str, help="""bam alignment file""")
+parser.add_argument('-i', dest='index', type=str, help="""index for bam file""")
 parser.add_argument('-c', dest='clusters', type=str, required=True, help="""Tab-delimited file with genes and clusters""")
 parser.add_argument('-p', dest='minprop', type=float, default=0, help="""minimum proportion of cluster covered""")
 parser.add_argument('-g', dest='geneout', type=str, default="geneout.tsv", help="""output file for gene counts""")
@@ -30,7 +31,7 @@ def gene_count(gene, bam):
 
 clusterdf = pd.read_csv(args.clusters, sep="\t")
 genelist = list(clusterdf["ID"])
-bamfile = pysam.AlignmentFile(args.bam, 'rb')
+bamfile = pysam.AlignmentFile(args.bam, 'rb', index_filename=args.index)
 # for every gene in genelist, get all the reads that mapped to that gene from bamfile
 counts = []
 coverages = []

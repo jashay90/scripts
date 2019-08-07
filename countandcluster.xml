@@ -1,11 +1,12 @@
-<tool id="hitsandclusters" name="Count hits per gene and cluster" version="0.1.0" python_template_version="2.7">
+<tool id="hitsandclusters" name="Count hits per gene and cluster" version="0.1.0">
 	<requirements>
+	<requirement type="package" version="3.6.7">python</requirement>	
 	<requirement type="package" version="0.15.2">pysam</requirement>
-	<requirement type="package" version="0.24.2">pandas</requirement>
-	<requirement type="package" version="1.16.4">numpy</requirement>	
+	<requirement type="package" version="0.24.1">pandas</requirement>
+	<requirement type="package" version="1.15.4">numpy</requirement>	
     </requirements>
     <command detect_errors="exit_code"><![CDATA[
-	    python '$__tool_directory__/countandcluster.py' -c '$clusters' -b '$bam' -g '$out1' -o '$out2'
+	    python '$__tool_directory__/countandcluster.py' -c '$clusters' -b '$bam' -g '$out1' -i '${bam.metadata.bam_index}' -o '$out2'
     ]]></command>
     <inputs>
 	    <param type="data" name="clusters" format="tabular" />
@@ -24,11 +25,12 @@
 	    </test>
     </tests>
     <help><![CDATA[
-        usage: countandcluster.py [-h] [-b BAM] -c CLUSTERS [-p MINPROP] [-g GENEOUT] [-o CLUSTEROUT]
+        usage: countandcluster.py [-h] [-b BAM] [-i INDEX] -c CLUSTERS [-p MINPROP] [-g GENEOUT] [-o CLUSTEROUT]
 
 optional arguments:
   -h, --help  show this help message and exit
   -b BAM          bam alignment file
+  -i INDEX	bam index
   -c CLUSTERS     Tab-delimited file with genes and clusters
   -p MINPROP      minimum proportion of cluster covered
   -g GENEOUT     output file for gene counts
